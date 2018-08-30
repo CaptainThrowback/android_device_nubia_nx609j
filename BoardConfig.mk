@@ -54,7 +54,7 @@ BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
-TARGET_PREBUILT_KERNEL := device/nubia/NX609J/kernel
+TARGET_PREBUILT_KERNEL := device/nubia/NX609J/prebuilt/Image.gz-dtb
 
 # Keymaster 3
 TARGET_HW_DISK_ENCRYPTION := true
@@ -75,31 +75,33 @@ TARGET_COPY_OUT_VENDOR := vendor
 
 # Filesystem
 BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_SUPPRESS_SECURE_ERASE := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 # TWRP Build Flags
 TW_THEME := portrait_hdpi
 BOARD_FIX_NUBIA_OTA := true
-BOARD_HAS_NO_REAL_SDCARD := true
-RECOVERY_SDCARD_ON_DATA := true
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-TARGET_RECOVERY_QCOM_RTC_FIX := true
+#BOARD_HAS_NO_REAL_SDCARD := true
+#RECOVERY_SDCARD_ON_DATA := true
+#TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+#TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd hwservicemanager keymaster-3-0
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_IGNORE_MISC_WIPE_DATA := true
+#TW_IGNORE_MISC_WIPE_DATA := true
 TW_INCLUDE_CRYPTO := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_NEW_ION_HEAP := true
-TW_NO_SCREEN_TIMEOUT := true
-TW_NO_USB_STORAGE := true
-TARGET_RECOVERY_DEVICE_MODULES := tzdata hwservicemanager ld-android android.hidl.base@1.0
-TW_RECOVERY_ADDITIONAL_RELINK_FILES := $(OUT)/system/usr/share/zoneinfo/tzdata $(OUT)/system/bin/hwservicemanager $(OUT)/system/lib64/ld-android.so $(OUT)/system/lib64/android.hidl.base@1.0.so
+#TW_NO_SCREEN_TIMEOUT := true
+#TW_NO_USB_STORAGE := true
+TARGET_RECOVERY_DEVICE_MODULES := tzdata hwservicemanager android.hidl.base@1.0
+TW_RECOVERY_ADDITIONAL_RELINK_FILES := $(OUT)/system/usr/share/zoneinfo/tzdata $(OUT)/system/bin/hwservicemanager $(OUT)/system/lib64/android.hidl.base@1.0.so
+#TW_USE_TOOLBOX := true
 
 # Additional modules and relink files for resetprop
-TARGET_RECOVERY_DEVICE_MODULES += libsqlite libicuuc libicui18n
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(OUT)/system/lib64/libsqlite.so $(OUT)/system/lib64/libicuuc.so $(OUT)/system/lib64/libicui18n.so
+TARGET_RECOVERY_DEVICE_MODULES += libicuuc libicui18n libsqlite
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(OUT)/system/lib64/libicuuc.so $(OUT)/system/lib64/libicui18n.so $(OUT)/system/lib64/libsqlite.so
 
 # TWRP Debug Flags
 #TWRP_EVENT_LOGGING := true

@@ -1,4 +1,5 @@
 on init
+	stop ldconfigtxt
 	start patchlevel
 
 on fs
@@ -12,6 +13,7 @@ on property:ro.crypto.state=encrypted
     start sbinqseecomd
 
 on property:ro.crypto.fs_crypto_blkdev=*
+    setprop crypto.ready 0
     stop sbinqseecomd
 
 service patchlevel /sbin/patchlevel.sh
