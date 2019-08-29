@@ -6,36 +6,60 @@ on fs
     chown system system /dev/ion
 
 on property:ro.crypto.state=encrypted
-	#wait /vendor
-    start sbinhwservicemanager
+    start patchlevel
+
+on property:crypto.ready=1
     start sbinqseecomd
+
+on property:init.svc.sbinqseecomd=running && property:sys.listeners.registered=true
+    start sbinhwservicemanager
+
+on property:init.svc.sbinqseecomd=running && property:vendor.sys.listeners.registered=true
+    start sbinhwservicemanager
+
+on property:init.svc.sbinhwservicemanager=running && property:hwservicemanager.ready=true
     start sbinkeymaster-3-0
 
 on property:ro.crypto.fs_crypto_blkdev=*
-    stop sbinhwservicemanager
+    setprop crypto.ready 0
     stop sbinqseecomd
+    stop sbinhwservicemanager
     stop sbinkeymaster-3-0
 
-service sbinhwservicemanager /sbin/hwservicemanager
+    # Need to free up the /system path for install zips to use
+    start mounts
+
+service patchlevel /sbin/patchlevel.sh
     user root
     group root
-    onrestart setprop hwservicemanager.ready false
     disabled
     oneshot
     seclabel u:r:recovery:s0
 
 service sbinqseecomd /sbin/qseecomd
-	user root
-	group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/sbin
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/sbin
     disabled
     oneshot
-	seclabel u:r:recovery:s0
+    seclabel u:r:recovery:s0
+
+service sbinhwservicemanager /sbin/hwservicemanager
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
 service sbinkeymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
     user root
     group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/sbin
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/sbin
+    disabled
+    seclabel u:r:recovery:s0
+
+service mounts /sbin/mounts.sh
+    user root
+    group root
     disabled
     oneshot
-	seclabel u:r:recovery:s0
+    seclabel u:r:recovery:s0
