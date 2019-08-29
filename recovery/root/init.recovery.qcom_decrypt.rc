@@ -26,9 +26,6 @@ on property:ro.crypto.fs_crypto_blkdev=*
     stop sbinhwservicemanager
     stop sbinkeymaster-3-0
 
-    # Need to free up the /system path for install zips to use
-    start mounts
-
 service patchlevel /sbin/patchlevel.sh
     user root
     group root
@@ -55,11 +52,4 @@ service sbinkeymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/sbin
     disabled
-    seclabel u:r:recovery:s0
-
-service mounts /sbin/mounts.sh
-    user root
-    group root
-    disabled
-    oneshot
     seclabel u:r:recovery:s0

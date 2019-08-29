@@ -3,7 +3,7 @@
 SCRIPTNAME="PatchLevel"
 LOGFILE=/tmp/recovery.log
 TEMPSYS=/s
-BUILDPROP=system/build.prop
+BUILDPROP=build.prop
 DEFAULTPROP=prop.default
 syspath="/dev/block/bootdevice/by-name/system"
 venbin="/vendor/bin"
